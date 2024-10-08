@@ -1,0 +1,96 @@
+﻿@model IEnumerable<WebMVC6.Models.Product>
+
+@{
+    ViewData["Title"] = "GetAllProduct";
+    List<string> imageExtension = new List<string>()
+    {
+        ".jpg",".png",".webp",".tiff",".gif",".jpeg",".svg"
+    };
+}
+<h3>@ViewBag.ABY</h3>
+<h3>@ViewData["ABC"]</h3>
+<h1>GetAllProduct</h1>
+
+<p>
+    <a asp-action="CreateProduct">Tạo mới sản phẩm</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvailableQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @* @ là khi mình nhúng code vào *@
+                    @{
+                        // Lấy đuôi của ảnh để check xem có phải ảnh hay ko?
+                        var extension = System.IO.Path.GetExtension(item.ImageUrl);
+                    }
+                    @if (imageExtension.Contains(extension)) // Check đuôi ảnh
+                    {
+                        <img src="~/img/@item.ImageUrl" height="100px">
+                        // Gán ảnh
+                    }
+                    else // Nếu không đúng ta set 1 ảnh mặc định
+                    {
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4v_dkWPQi1loWthMLDpIYa587pwZ6KWz9SdQ6FakvnSLrYK03I7MyqWimrkVntTXNxE0&usqp=CAU" height="100px">
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditProduct", new {  id = item.Id}) |
+                    @Html.ActionLink("Mô tả", "ProductDetails", new { id = item.Id}) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
